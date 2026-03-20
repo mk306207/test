@@ -7,8 +7,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,27 +18,22 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var randomColor = Color.fromARGB(255, 255, 255, 255);
+  /*
+  randomColor - variable to store the current random color, initialized to white, color of the background
+  randomRed, randomGreen, randomBlue - variables to store the individual RGB components of the random color, initialized to 255 (white)
+  */
+  var randomColor = Color.fromARGB(255, 255, 255, 255); 
   final random = Random();
   var randomRed = 255;
   var randomGreen = 255;
   var randomBlue = 255;
 
+  // Function to generate a new random color when the screen is touched
   void _screenTouched() {
     setState(() {
       randomRed = random.nextInt(256);
@@ -50,7 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
       randomColor = Color.fromARGB(255, randomRed, randomGreen, randomBlue);
     });
   }
-
+  /* Function to invert the color for better visibility of text and button
+  It takes a Color object as input and returns a new Color object with inverted RGB values
+  */
   Color _invertColor(Color color) {
       Color newcolor = Color.fromARGB(
         255,
@@ -61,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return newcolor;
   }
 
+  // Function to reset the color back to white when the button is pressed
   void _resetColor() {
     setState(() {
       randomRed = 255;
