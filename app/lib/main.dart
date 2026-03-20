@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -34,48 +35,67 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  var randomColor = Color.fromARGB(255, 255, 255, 255);
+  final random = Random();
+  var randomRed = 255;
+  var randomGreen = 255;
+  var randomBlue = 255;
 
   void _screenTouched() {
     setState(() {
-      //TODO: color change
-      print('Screen touched');
-      _counter++;
+      randomRed = random.nextInt(256);
+      randomGreen = random.nextInt(256);
+      randomBlue = random.nextInt(256);
+
+      randomColor = Color.fromARGB(255, randomRed, randomGreen, randomBlue);
+    });
+  }
+
+  Color _invertColor(Color color) {
+      Color newcolor = Color.fromARGB(
+        255,
+        255 - randomRed,
+        255 - randomGreen,
+        255 - randomBlue
+      );
+      return newcolor;
+  }
+
+  void _resetColor() {
+    setState(() {
+      randomRed = 255;
+      randomGreen = 255;
+      randomBlue = 255;
+      randomColor = Color.fromARGB(255, randomRed, randomGreen, randomBlue);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: randomColor,
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: _screenTouched,
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Center(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          child:
-            const Text('Hello there'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [            
+            Text(
+              'Hello there',
+              style: TextStyle(
+                color: _invertColor(randomColor),
+                fontSize: 40,
+                fontWeight: FontWeight.bold
+              ),),
+            TextButton(
+              onPressed: _resetColor, 
+              child: Text('Reset Color'))
+            ],)
+
         ),
-      ),// This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
