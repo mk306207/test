@@ -88,10 +88,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: _invertColor(randomColor),
                 fontSize: 40,
                 fontWeight: FontWeight.bold
-              ),),
+              ),
+              ),
             TextButton(
               onPressed: _resetColor, 
-              child: Text('Reset Color'))
+              style: TextButton.styleFrom(
+                backgroundColor: _invertColor(randomColor),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              ),
+              child: Text(
+                'Reset Color',
+                style: TextStyle(
+                  color: randomColor,
+                  fontSize: 20,
+                ),
+              )
+            )
             ],)
 
         ),
