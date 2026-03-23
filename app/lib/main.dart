@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter/material.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -9,8 +10,8 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const MyHomePage(),
+    return const MaterialApp(
+      home: MyHomePage(),
     );
   }
 }
@@ -24,45 +25,55 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   /*
-  randomColor - variable to store the current random color, initialized to white, color of the background
-  randomRed, randomGreen, randomBlue - variables to store the individual RGB components of the random color, initialized to 255 (white)
+  randomColor - variable to store the current random color, initialized 
+  to white, color of the background
+  randomRed, randomGreen, randomBlue - variables to store the individual RGB 
+  components of the random color, initialized to 255 (white)
   */
-  var randomColor = Color.fromARGB(255, 255, 255, 255); 
+  Color randomColor = const Color.fromARGB(255, 255, 255, 255); 
   final random = Random();
-  var randomRed = 255;
-  var randomGreen = 255;
-  var randomBlue = 255;
+  int randomRed = 255;
+  int randomGreen = 255;
+  int randomBlue = 255;
+  int poolOfColors = 256; /* Variable to avoid magic number, 
+  represents the number of possible values for each RGB component (0-255) */
+  int whiteColor = 255; /* Variable to avoid magic number, 
+  represents the value for white color */
 
   // Function to generate a new random color when the screen is touched
   void _screenTouched() {
     setState(() {
-      randomRed = random.nextInt(256);
-      randomGreen = random.nextInt(256);
-      randomBlue = random.nextInt(256);
+      randomRed = random.nextInt(poolOfColors);
+      randomGreen = random.nextInt(poolOfColors);
+      randomBlue = random.nextInt(poolOfColors);
 
-      randomColor = Color.fromARGB(255, randomRed, randomGreen, randomBlue);
+      randomColor = Color.fromARGB(whiteColor, randomRed, randomGreen,
+       randomBlue);
     });
   }
   /* Function to invert the color for better visibility of text and button
-  It takes a Color object as input and returns a new Color object with inverted RGB values
+  It takes a Color object as input and returns 
+  a new Color object with inverted RGB values
   */
-  Color _invertColor(Color color) {
-      Color newcolor = Color.fromARGB(
-        255,
-        255 - randomRed,
-        255 - randomGreen,
-        255 - randomBlue
+  Color _invertColor() {
+      final Color newcolor = Color.fromARGB(
+        whiteColor,
+        whiteColor - randomRed,
+        whiteColor - randomGreen,
+        whiteColor - randomBlue
       );
+
       return newcolor;
   }
 
   // Function to reset the color back to white when the button is pressed
   void _resetColor() {
     setState(() {
-      randomRed = 255;
-      randomGreen = 255;
-      randomBlue = 255;
-      randomColor = Color.fromARGB(255, randomRed, randomGreen, randomBlue);
+      randomRed = whiteColor;
+      randomGreen = whiteColor;
+      randomBlue = whiteColor;
+      randomColor = Color.fromARGB(whiteColor, randomRed, randomGreen,
+       randomBlue);
     });
   }
 
@@ -76,12 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.center,
             children: [            
             Text(
               'Hello there',
               style: TextStyle(
-                color: _invertColor(randomColor),
+                color: _invertColor(),
                 fontSize: 40,
                 fontWeight: FontWeight.bold
               ),
@@ -89,8 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               onPressed: _resetColor, 
               style: TextButton.styleFrom(
-                backgroundColor: _invertColor(randomColor),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                backgroundColor: _invertColor(),
+                padding: const EdgeInsets.symmetric(horizontal: 20,
+                 vertical: 10),
               ),
               child: Text(
                 'Reset Color',
